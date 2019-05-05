@@ -98,7 +98,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     tmp2 = {}
     per = None
 
-    for k in kgrid or [0.0]:
+    for k in kgrid:
         correct = 0
         tmp3 = {}
         for i in self.features:
@@ -118,8 +118,8 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         self.conditionals = tmp3
         guess = self.classify(validationData)
 
-        for i, g in enumerate(guess):
-            correct += (validationLabels[i] == g and 1.0 or 0.0)
+        for i in range(len(guess)):
+            correct += (validationLabels[i] == guess[i] and 1.0 or 0.0)
         
         accuracy = correct / len(guess)
 
@@ -127,6 +127,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         if accuracy > per or per is None:
             per = accuracy
             tmp2 = tmp3
+            print("%s--------------", accuracy)
             self.k = k
 
     self.conditionals = tmp2
@@ -158,12 +159,15 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     """
     logJoint = util.Counter()
 
-    for i in self.legalLabels:
-        logJoint[i] = math.log(self.count[i])
-        for j in self.conditionals:
-            prob = self.conditionals[j][datum[j]][i]
-            logJoint[i] += (prob and math.log(prob) or 0.0)
 
+
+
+
+    for x in self.legalLabels:
+        logJoint[x] = math.log(self.count[x])
+        for y in self.conditionals:
+            prob = self.conditionals[y][datum[y]][x]
+            logJoint[x] += (math.log(prob))
     return logJoint
 
   
@@ -177,13 +181,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     featuresOdds = []
 
 
-    for i in self.features:
-        top = self.conditionals[i][1][label1]
-        bottom = self.conditionals[i][1][label2]
-        ratio = top / bottom
-        featuresOdds.append((i, ratio))
 
-    featuresOdds = [f for f, odds in sorted(featuresOdds, key=lambda t: -t[1])[:100]]
 
     return featuresOdds
     
