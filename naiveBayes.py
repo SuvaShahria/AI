@@ -119,7 +119,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         guess = self.classify(validationData)
 
         for i in range(len(guess)):
-            correct += (validationLabels[i] == guess[i] and 1.0 or 0.0)
+            correct += (validationLabels[i] == guess[i])
         
         accuracy = correct / len(guess)
 
@@ -127,7 +127,7 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
         if accuracy > per or per is None:
             per = accuracy
             tmp2 = tmp3
-            print("%s--------------", accuracy)
+            
             self.k = k
 
     self.conditionals = tmp2
