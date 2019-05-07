@@ -164,10 +164,12 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
 
 
     for x in self.legalLabels:
+        print(self.count[x])
         logJoint[x] = math.log(self.count[x])
         for y in self.conditionals:
             prob = self.conditionals[y][datum[y]][x]
             logJoint[x] += (math.log(prob))
+			
     return logJoint
 
   
