@@ -159,10 +159,6 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     """
     logJoint = util.Counter()
 
-
-
-
-
     for x in self.legalLabels:
         print(self.count[x])
         logJoint[x] = math.log(self.count[x])
